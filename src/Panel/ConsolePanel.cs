@@ -54,8 +54,12 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
         Console.getSingleton().registerVariable("myFloatVar", testScript, "floatVar");
         Console.getSingleton().registerVariable("myStringVar", testScript, "stringVar");
 
+        GameObject testSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        testSphere.transform.parent = this.transform;
+        testSphere.transform.position = Camera.main.transform.position + new Vector3(0, 0, 5);
 
-        Console.getSingleton().registerGameObject("hede", GameObject.Find("Ground").gameObject);
+
+        Console.getSingleton().registerGameObject("mySphere", testSphere);
     }
 
     //initializes the lines to be shown as message output
