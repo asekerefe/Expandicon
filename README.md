@@ -1,7 +1,7 @@
 Expandicon
 ==========
 
-Expandicon is a console implementation to be used in Unity3D projects in order to change values and perform specific operations on GameObjects without interacting the Unity3D editor. 
+Expandicon is a console implementation that can be used in Unity3D projects in order to change values and perform specific operations on GameObjects without interacting the Unity3D editor. 
 
 Expandicon stands for '<b>Expandable Console</b>' which identifes its main feature: expandability.
 
