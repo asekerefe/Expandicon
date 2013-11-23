@@ -55,5 +55,14 @@ To register a GameObject to the console, you should send an alias and object's i
 
 Now, defined commands can be run on 'soldier' game object. For instance, you can type '<b>setposition soldier 0 10 0</b>' to set its position to (0,10,0)
 
+Custom Commands
+===============
+
+You can define your own custom commands by extending '<b>Command</b>' class. Please refer to the builtin commands to understand how they work.
+
+Like Variables and GameObjects, a custom command should be registered to the core.
+
+<code>Console.getSingleton().registerCommand(new DestroyCommand());</code>
+
 
 
