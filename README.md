@@ -31,6 +31,8 @@ Console is a singleton class which utilizes from publish/subscribe design patter
 Console Panel
 =============
 
+![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/ConsolePanel.png)
+
 Expandicon comes with a console panel prefab which handles IO operations. To use it, import the package. Then, create a layer named GUI. 
 In order to start using Expandicon to manage your variables or GameObjects runtime, you should register them to the console. 
 
