@@ -55,6 +55,8 @@ After registering the variable, you will able to run related commands on your va
 
 For instance, to change the value of PlayerID variable to 10, you should type <b>set pID 10</b>.
 
+![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/PlayerID.png)
+
 
 GameObjects
 --------
@@ -75,8 +77,16 @@ Commands are tiny methods which work on the given parameters (if necessary). The
 
 There are 3 types of commands:
 - Variable: This command type requires a valid variable name to run. Since the console checks the type of the passed parameter before running the command, the first parameter of the command should be a Variable alias.
+
+![Preview Variable](https://raw.github.com/asekerefe/Expandicon/master/screenshot/VariableCommand.png)
+
 - GameObject: This type of a command work on a GameObject. In order to run it, second parameter should be a valid GameObject alias.
-- Generic: Unlike the first two command types, with a Generic Command, console does not perform type checking before running it. In other words, this command type is used for making system commands which do not require objects.
+
+![Preview GameObject](https://raw.github.com/asekerefe/Expandicon/master/screenshot/GameObjectCommand.png)
+
+- Generic: Unlike the first two command types, with a Generic Command, console does not perform type checking before running it. In other words, this command type is used for making system commands which do not require specific type of parameters.
+
+![Preview Generic](https://raw.github.com/asekerefe/Expandicon/master/screenshot/GenericCommand.png)
 
 
 Making Your Own Commands
