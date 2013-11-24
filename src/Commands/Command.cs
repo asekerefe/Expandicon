@@ -29,7 +29,7 @@ namespace Expandicon
         }
 
         //this method is called by Console if the command
-        //do not require a variable to perform its operation. 
+        //do not require a specific parameter to perform its operation. 
         //A feedback message should be returned to be used in 
         //the console as command output
         public virtual string runCommand(string[] parameters)
@@ -37,7 +37,7 @@ namespace Expandicon
             return "Unimplemented method!";
         }
 
-        //this method is callbed by Console if the command
+        //this method is called by Console if the command
         //is trying to be invoked with a GameObject instance to
         //perform a specific command. returns the feedback message
         //of the operation

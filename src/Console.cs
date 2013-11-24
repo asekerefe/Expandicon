@@ -78,6 +78,7 @@ namespace Expandicon
             registerCommand(new SetPositionCommand());
             registerCommand(new ActivateCommand());
             registerCommand(new DeactivateCommand());
+            registerCommand(new DestroyCommand());
             //generic commands
             registerCommand(new SendRateCommand());
             registerCommand(new TimeCommand());
