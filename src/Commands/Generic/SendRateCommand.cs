@@ -5,9 +5,11 @@ using UnityEngine;
  * SendRateCommand
  * 
  * This class is responsible for
- * changing the send rate of the network
+ * getting and setting the sendRate 
+ * inside Network
  * 
- * usage: 'sendrate <value>'
+ * usage: 'sendrate' -> get
+ * usage: 'sendrate <value>' -> set
  * 
  * written by Alican Şekerefe
 */
@@ -23,8 +25,9 @@ namespace Expandicon
         public override string runCommand(string[] parameters)
         {
             string feedbackMessage = "";
-
-            if (parameters.Length == 1)
+            if (parameters.Length == 0)
+                feedbackMessage = "sendRate: " + Network.sendRate;
+            else if (parameters.Length == 1)
             {
                 try
                 {

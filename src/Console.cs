@@ -95,12 +95,17 @@ namespace Expandicon
         //registers the gameobject with its alias
         public void registerGameObject(string alias, GameObject gameObject)
         {
-            //make sure there won't be duplications
-            if (!aliasToGameObjectMap.ContainsKey(alias))
+            if (gameObject != null)
             {
-                gameObjectAliasList.Add(alias);
-                aliasToGameObjectMap[alias] = gameObject;
+                //make sure there won't be duplications
+                if (!aliasToGameObjectMap.ContainsKey(alias))
+                {
+                    gameObjectAliasList.Add(alias);
+                    aliasToGameObjectMap[alias] = gameObject;
+                }
             }
+            else
+                Debug.LogError("gameObject is NULL!");
         }
 
         //registers the command with the given commandName alias
@@ -122,10 +127,15 @@ namespace Expandicon
         //targetVariableName: variable's name as string
         public void registerVariable(string alias, object targetObject, string targetVariableName)
         {
-            //store data given with in a VariableInfo object to keep it 
-            Variable varInfo = new Variable(alias, targetObject, targetVariableName);
-            aliasToVariableMap[alias] = varInfo;
-            variableAliasList.Add(alias);
+            if (targetObject != null)
+            {
+                //store data given with in a VariableInfo object to keep it 
+                Variable varInfo = new Variable(alias, targetObject, targetVariableName);
+                aliasToVariableMap[alias] = varInfo;
+                variableAliasList.Add(alias);
+            }
+            else
+                Debug.LogError("targetObject is NULL!");
         }
 
         //multi-alias version of registerVariable which a string[]
@@ -158,7 +168,6 @@ namespace Expandicon
         //returns the first similar word to the 'input' in the words list
         private string findClosestWord(string input, List<string> words)
         {
-            input = input.Trim();
             string result = input;
             foreach (string possibleWord in words)
             {
@@ -178,7 +187,7 @@ namespace Expandicon
         {
             string feedback = "";
             //get parameters
-            List<string> parameters = new List<string>(input.Split(' '));
+            List<string> parameters = new List<string>(input.Trim().Split(' '));
             if (parameters.Count > 0)
             {
                 //get the command name
@@ -201,7 +210,11 @@ namespace Expandicon
                             string alias = parameters[0];
                             parameters.RemoveAt(0);
                             Variable info = aliasToVariableMap[alias];
-                            feedback = commandName + ": " + command.runCommand(info, parameters.ToArray());
+                            object targetObject = info.getTargetObject();
+                            if(targetObject!=null)
+                                feedback = commandName + ": " + command.runCommand(info, parameters.ToArray());
+                            else
+                                feedback = "Console error: object is NULL!";
                         }
                         else
                             feedback = "Console error: command expects a valid variable alias";
@@ -214,7 +227,10 @@ namespace Expandicon
                             string alias = parameters[0];
                             parameters.RemoveAt(0);
                             GameObject gameObject = aliasToGameObjectMap[alias];
-                            feedback = commandName + ": " + command.runCommand(gameObject, parameters.ToArray());
+                            if (gameObject != null)
+                                feedback = commandName + ": " + command.runCommand(gameObject, parameters.ToArray());
+                            else
+                                feedback = "Console error: given GameObject has been destroyed!";
                         }
                         else
                             feedback = "Console error: command expects a valid variable alias";
@@ -235,11 +251,8 @@ namespace Expandicon
         //performs a completion operation on the given console input
         public string getCompletedInput(string input)
         {
-            string result = input;
+            string result = input.Trim();
             List<string> tokens = new List<string>(input.Split(' '));
-            //remove whitespace characters from the tokens
-            for (int i = 0; i < tokens.Count; i++)
-                tokens[i] = tokens[i].Trim();
 
             //if there is only one token, then it is a command
             if (tokens.Count == 1)
