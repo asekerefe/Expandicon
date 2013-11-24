@@ -58,7 +58,6 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
         testSphere.transform.parent = this.transform;
         testSphere.transform.position = Camera.main.transform.position + new Vector3(0, 0, 5);
 
-
         Console.getSingleton().registerGameObject("mySphere", testSphere);
     }
 
@@ -139,9 +138,9 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
                     currentInput = "";
                 }
                 else if (Input.GetKeyDown(KeyCode.UpArrow))
-                    currentInput = getHistoricalCommandInput(false);
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
                     currentInput = getHistoricalCommandInput(true);
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                    currentInput = getHistoricalCommandInput(false);
                 else if (Input.GetKeyDown(KeyCode.Tab))
                     //try to complete the input through the Console
                     currentInput = Console.getSingleton().getCompletedInput(currentInput);

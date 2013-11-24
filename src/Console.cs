@@ -251,7 +251,8 @@ namespace Expandicon
         //performs a completion operation on the given console input
         public string getCompletedInput(string input)
         {
-            string result = input.Trim();
+            input = input.Trim();
+            string result = input;
             List<string> tokens = new List<string>(input.Split(' '));
 
             //if there is only one token, then it is a command
