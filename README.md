@@ -29,7 +29,7 @@ Console is a singleton class which utilizes from publish/subscribe design patter
 
 
 Console Panel
-=============
+--------
 
 ![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/ConsolePanel.png)
 
@@ -37,7 +37,7 @@ Expandicon comes with a console panel prefab which handles IO operations. To use
 In order to start using Expandicon to manage your variables or GameObjects runtime, you should register them to the console. 
 
 Variables
-=========
+--------
 
 To register a variable, you should pass its object and the target variable's name as string with an alias:
 <code>Console.getSingleton().registerVariable("pID", obj, "playerID");</code>
@@ -48,24 +48,74 @@ For instance, to change the value of PlayerID variable to 10, you should type '<
 
 
 GameObjects
-===========
+--------
 
 Currently, target GameObjects are registered the same with Variables. However, you can define your auto registration script to add them on desired GameObjects.
 
 To register a GameObject to the console, you should send an alias and object's itself.
  
-<code>Console.getSingleton().registerGameObject("soldier", gameObject);</code>
+<code>Console.getSingleton().registerGameObject("box", gameObject);</code>
 
-Now, defined commands can be run on 'soldier' game object. For instance, you can type '<b>setposition soldier 0 10 0</b>' to set its position to (0,10,0)
+Now, defined commands can be run on 'box' game object. For instance, you can type '<b>setposition box 0 10 0</b>' to set its position to (0,10,0)
 
-Custom Commands
-===============
 
-You can define your own custom commands by extending '<b>Command</b>' class. Please refer to the builtin commands to understand how they work.
+Commands
+--------
+
+Commands are tiny methods which work on the given parameters (if necessary). The first word of the console input must always be the command's name. 
+
+There are 3 types of commands:
+- Variable: This command type requires a valid variable name to run. Since the console checks the type of the passed parameter before running the command, the first parameter of the command should be a Variable alias.
+- GameObject: This type of a command work on a GameObject. In order to run it, second parameter should be a valid GameObject alias.
+- Generic: Unlike the first two command types, with a Generic Command, console does not perform type checking before running it. In other words, this command type is used for making system commands which do not require objects.
+
+
+Making Your Own Commands
+========================
+
+You can define your own custom commands by extending <b>Command</b> abstract class. 
+
+<i>getParameterType</i> method must be implemented to tell Console what kind of a parameter the command needs. 
+
+In addition, it contains three overloaded virtual <i>runCommand</i> methods for three types of commands. You should override the relevant method according to the type of command you are implementing.
+
+Destroy Command: Making of
+---------------
+
+Let's implement a command that destroy's the given GameObject.
+
+First things first; we create a class that extends Command. It's constructor should be passing the command's name to the base (to be used in the console).
+
+Then, we implement <i>getParameterType</i> to identify its type as GameObject;
+
+Finally, because this command will be running on a GameObject, we should override the <i>runCommand</i> method which takes a GameObject. This method will be called by the console after validating that given parameter is really a GameObject. Also, it returns a feedback message to tell the user whether the operation was successful or not.
+
+At the end, class should look like this and ready to be run;
+
+
+    public class DestroyCommand : Command
+    {
+        public DestroyCommand() : base("destroy") { }
+
+        public override ParameterType getParameterType()
+        {
+            return ParameterType.GAMEOBJECT;
+        }
+
+        public override string runCommand(GameObject gameObject, string[] parameters)
+        {
+            GameObject.Destroy(gameObject);
+            return "GameObject has been destroyed";
+        }
+    }
+
 
 Like Variables and GameObjects, a custom command should be registered to the core.
 
 <code>Console.getSingleton().registerCommand(new DestroyCommand());</code>
 
+Now, this command can be run like this;
+
+<b>'destroy box'</b>
 
 
