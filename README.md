@@ -3,7 +3,7 @@ Expandicon
 
 Expandicon is a console implementation that can be used in Unity3D projects in order to change values and perform specific operations on GameObjects without interacting the Unity3D editor. 
 
-Expandicon stands for '<b>Expandable Console</b>' which identifes its main feature: expandability.
+Expandicon stands for <b>Expandable Console</b> which identifes its main feature: expandability.
 
 Project Expandicon is currently under development.
 
@@ -51,7 +51,7 @@ To register a variable, you should pass its object and the target variable's nam
 
 After registering the variable, you will able to run related commands on your variables.
 
-For instance, to change the value of PlayerID variable to 10, you should type '<b>set pID 10</b>'.
+For instance, to change the value of PlayerID variable to 10, you should type <b>set pID 10</b>.
 
 
 GameObjects
@@ -63,7 +63,7 @@ To register a GameObject to the console, you should send an alias and object's i
  
 <code>Console.getSingleton().registerGameObject("box", gameObject);</code>
 
-Now, defined commands can be run on 'box' game object. For instance, you can type '<b>setposition box 0 10 0</b>' to set its position to (0,10,0)
+Now, defined commands can be run on box game object. For instance, you can type <b>setposition box 0 10 0</b> to set its position to (0,10,0)
 
 
 Commands
@@ -123,13 +123,13 @@ Like Variables and GameObjects, a custom command should be registered to the cor
 
 Now, this command can be run like this:
 
-<b>'destroy box'</b>
+<b>destroy box</b>
 
 And the result would be:
 
 ![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/DestroyCommandOutput.png)
 
 
-note: the parameter's array comes from the console can be filled or not (depending on the console input). Although I've created a command for each type of operation (for example, GetPosition and SetPosition) for simplification,  your can process those parameters to overload your command. 
+Note: The parameter array comes from the console could be filled or empty (depending on the console input). Although I've created a command for each type of operation (for example, GetPosition and SetPosition) for simplification,  your can process those parameters to overload your command. 
 
-Let's say you want to overload the destroy command so that it could perform two different destroy operations: GameObject.Destroy and GameObject.DestroyImmediate. You would pass the input <b>destroy box i</b>. In this case, the first element of the parameter array will be <b>i</b>. By checking the parameter array, you can change the behavior of <i>destroy</i>.
+Let's say you want to overload the destroy command so that it could perform two different destroy operations: GameObject.Destroy and GameObject.DestroyImmediate. You would pass the input as <b>destroy box i</b>. In this case, the first element of the parameter array will be <b>i</b>. By checking the parameter array, you can change the behavior of <i>destroy</i>.
