@@ -40,6 +40,8 @@ To use it in your projects:
 - create a layer named GUI. 
 - set the culling mask of your cameras to ignore GUI layer
 
+Registration
+------------
 
 In order to start using Expandicon to manage your variables or GameObjects runtime, you should register them to the console. 
 
