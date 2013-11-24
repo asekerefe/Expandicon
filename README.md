@@ -118,4 +118,8 @@ Now, this command can be run like this;
 
 <b>'destroy box'</b>
 
+And the result;
+
+![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/DestroyCommandOutput.png)
+
 
