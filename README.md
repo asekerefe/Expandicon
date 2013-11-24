@@ -33,7 +33,14 @@ Console Panel
 
 ![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/ConsolePanel.png)
 
-Expandicon comes with a console panel prefab which handles IO operations. To use it, import the package. Then, create a layer named GUI. 
+Expandicon comes with a console panel prefab which handles IO operations and prints output messages from Console. 
+
+To use it in your projects: 
+- import the package. 
+- create a layer named GUI. 
+- set the culling mask of your cameras to ignore GUI layer
+
+
 In order to start using Expandicon to manage your variables or GameObjects runtime, you should register them to the console. 
 
 Variables
@@ -90,7 +97,7 @@ Then, we implement <i>getParameterType</i> to identify its type as GameObject;
 
 Finally, because this command will be running on a GameObject, we should override the <i>runCommand</i> method which takes a GameObject. This method will be called by the console after validating that given parameter is really a GameObject. Also, it returns a feedback message to tell the user whether the operation was successful or not.
 
-At the end, class should look like this and ready to be run;
+At the end, class should look like this and the command is ready to operate;
 
 
     public class DestroyCommand : Command
@@ -114,12 +121,15 @@ Like Variables and GameObjects, a custom command should be registered to the cor
 
 <code>Console.getSingleton().registerCommand(new DestroyCommand());</code>
 
-Now, this command can be run like this;
+Now, this command can be run like this:
 
 <b>'destroy box'</b>
 
-And the result;
+And the result would be:
 
 ![Preview ConsolePanel](https://raw.github.com/asekerefe/Expandicon/master/screenshot/DestroyCommandOutput.png)
 
 
+note: the parameter's array comes from the console can be filled or not (depending on the console input). Although I've created a command for each type of operation (for example, GetPosition and SetPosition) for simplification,  your can process those parameters to overload your command. 
+
+Let's say you want to overload the destroy command so that it could perform two different destroy operations: GameObject.Destroy and GameObject.DestroyImmediate. You would pass the input <b>destroy box i</b>. In this case, the first element of the parameter array will be <b>i</b>. By checking the parameter array, you can change the behavior of <i>destroy</i>.
