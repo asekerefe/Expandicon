@@ -62,12 +62,10 @@ namespace Expandicon
 
 
             eventSubscribers = new List<ConsoleCallbackInterface>();
-
-            registerBuiltInCommands();
         }
 
         //registers the built-in commands to the system
-        private void registerBuiltInCommands()
+        public void registerBuiltInCommands()
         {
             //variable commands
             registerCommand(new GetCommand());
