@@ -7,10 +7,10 @@ using System.Collections.Generic;
 /*
  * Console
  * 
- * A singleton class which controls the console system;
+ * A class which controls the console system;
  * the brain. Main responsibilities:
  * 
- * - Registration of console commmands, variables and game objects.  
+ * - Registration of console commmands and variables 
  * - Console input completion
  * - Running the commands by passing the relevant parameters
  * 
@@ -21,9 +21,6 @@ namespace Expandicon
 {
     public class Console
     {
-        //the singleton
-        private static Console singleton = null;
-
         //lists and dictionaries for the commands and variables
         private List<string> commandList = null;
         private Dictionary<string, Command> commandNameToCommandMap = null;
@@ -35,15 +32,7 @@ namespace Expandicon
         //a subscriber list for console events
         private List<ConsoleCallbackInterface> eventSubscribers = null;
 
-        //singleton getter
-        public static Console getSingleton()
-        {
-            if (singleton == null)
-                singleton = new Console();
-            return singleton;
-        }
-
-        private Console()
+        public Console()
         {
             initialize();
         }
@@ -56,10 +45,6 @@ namespace Expandicon
 
             commandNameToCommandMap = new Dictionary<string, Command>();
             commandList = new List<string>();
-
-            aliasToGameObjectMap = new Dictionary<string, GameObject>();
-            gameObjectAliasList = new List<string>();
-
 
             eventSubscribers = new List<ConsoleCallbackInterface>();
         }
@@ -90,6 +75,19 @@ namespace Expandicon
                 eventSubscribers.Add(target);
         }
 
+        //registers the command with the given commandName alias
+        //to the console system
+        public void registerCommand(Command command)
+        {
+            if (command != null)
+            {
+                //add the command to the structures
+                string commandName = command.getCommandName();
+                commandList.Add(commandName);
+                commandNameToCommandMap[commandName] = command;
+            }
+        }
+
         //registers the gameobject with its alias
         public void registerGameObject(string alias, GameObject gameObject)
         {
@@ -104,19 +102,6 @@ namespace Expandicon
             }
             else
                 Debug.LogError("gameObject is NULL!");
-        }
-
-        //registers the command with the given commandName alias
-        //to the console system
-        public void registerCommand(Command command)
-        {
-            if (command != null)
-            {
-                //add the command to the structures
-                string commandName = command.getCommandName();
-                commandList.Add(commandName);
-                commandNameToCommandMap[commandName] = command;
-            }
         }
 
         //register the variable with the given alias to the console.
@@ -155,12 +140,6 @@ namespace Expandicon
         public string getClosestVariableAlias(string incompleteAliasName)
         {
             return findClosestWord(incompleteAliasName, variableAliasList);
-        }
-
-        //returns the closest alias name compared to the given input
-        private string getClosestGameObjectAlias(string incompleteGameObjectName)
-        {
-            return findClosestWord(incompleteGameObjectName, gameObjectAliasList);
         }
 
         //returns the first similar word to the 'input' in the words list
@@ -209,26 +188,10 @@ namespace Expandicon
                             parameters.RemoveAt(0);
                             Variable info = aliasToVariableMap[alias];
                             object targetObject = info.getTargetObject();
-                            if(targetObject!=null)
+                            if (targetObject != null)
                                 feedback = commandName + ": " + command.runCommand(info, parameters.ToArray());
                             else
                                 feedback = "Console error: object is NULL!";
-                        }
-                        else
-                            feedback = "Console error: command expects a valid variable alias";
-                    }
-                    else if (command.getParameterType() == ParameterType.GAMEOBJECT)
-                    {
-                        //make sure the next parameter is a registered variable
-                        if (parameters.Count > 0 && gameObjectAliasList.Contains(parameters[0]))
-                        {
-                            string alias = parameters[0];
-                            parameters.RemoveAt(0);
-                            GameObject gameObject = aliasToGameObjectMap[alias];
-                            if (gameObject != null)
-                                feedback = commandName + ": " + command.runCommand(gameObject, parameters.ToArray());
-                            else
-                                feedback = "Console error: given GameObject has been destroyed!";
                         }
                         else
                             feedback = "Console error: command expects a valid variable alias";
@@ -279,8 +242,6 @@ namespace Expandicon
 
                         if (paramType == ParameterType.VARIABLE)
                             closestPossibleAlias = getClosestVariableAlias(tokens[1]);
-                        else if (paramType == ParameterType.GAMEOBJECT)
-                            closestPossibleAlias = getClosestGameObjectAlias(tokens[1]);
 
                         //check if it is found
                         if (closestPossibleAlias != tokens[1])

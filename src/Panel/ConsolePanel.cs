@@ -20,6 +20,8 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
     //the Console with its variables
     public bool initializeTestObjects = true;
 
+    private Console console = null;
+
     private Camera camera = null;
     private List<GUIText> lines = null;
     private Stack<string> commandHistoryStack = null;
@@ -37,7 +39,8 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
 
         //get the camera for show/hide operation
         camera = transform.GetComponentInChildren<Camera>();
-        Console.getSingleton().registerAsEventSubscriber(this);
+        console = new Console();
+        console.registerAsEventSubscriber(this);
     }
 
 
@@ -49,16 +52,16 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
         testObject.name = "ConsoleTestObject";
         ConsoleTest testScript=testObject.AddComponent<ConsoleTest>();
         
-        Console.getSingleton().registerVariable("myBoolVar", testScript, "boolVar");
-        Console.getSingleton().registerVariable("myIntVar", testScript, "intVar");
-        Console.getSingleton().registerVariable("myFloatVar", testScript, "floatVar");
-        Console.getSingleton().registerVariable("myStringVar", testScript, "stringVar");
+        console.registerVariable("myBoolVar", testScript, "boolVar");
+        console.registerVariable("myIntVar", testScript, "intVar");
+        console.registerVariable("myFloatVar", testScript, "floatVar");
+        console.registerVariable("myStringVar", testScript, "stringVar");
 
         GameObject testSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         testSphere.transform.parent = this.transform;
         testSphere.transform.position = Camera.main.transform.position + new Vector3(0, 0, 5);
 
-        Console.getSingleton().registerGameObject("mySphere", testSphere);
+        console.registerGameObject("mySphere", testSphere);
     }
 
     //initializes the lines to be shown as message output
@@ -132,7 +135,7 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
                     commandHistoryStack.Push(currentInput);
                     //print it
                     printOutput(currentInput, false);
-                    Console.getSingleton().run(currentInput);
+                    console.run(currentInput);
                     //reset the command stack index
                     commandHistoryStackIndex = -1;
                     currentInput = "";
@@ -143,7 +146,7 @@ public class ConsolePanel : MonoBehaviour, ConsoleCallbackInterface
                     currentInput = getHistoricalCommandInput(false);
                 else if (Input.GetKeyDown(KeyCode.Tab))
                     //try to complete the input through the Console
-                    currentInput = Console.getSingleton().getCompletedInput(currentInput);
+                    currentInput = console.getCompletedInput(currentInput);
                 else
                     //add every other pressed buttons to the string
                     currentInput += Input.inputString;
