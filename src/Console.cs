@@ -46,6 +46,10 @@ namespace Expandicon
             commandNameToCommandMap = new Dictionary<string, Command>();
             commandList = new List<string>();
 
+            aliasToGameObjectMap = new Dictionary<string, GameObject>();
+            gameObjectAliasList = new List<string>();
+
+
             eventSubscribers = new List<ConsoleCallbackInterface>();
         }
 
@@ -142,6 +146,12 @@ namespace Expandicon
             return findClosestWord(incompleteAliasName, variableAliasList);
         }
 
+        //returns the closest alias name compared to the given input
+        private string getClosestGameObjectAlias(string incompleteGameObjectName)
+        {
+            return findClosestWord(incompleteGameObjectName, gameObjectAliasList);
+        }
+
         //returns the first similar word to the 'input' in the words list
         private string findClosestWord(string input, List<string> words)
         {
@@ -196,6 +206,22 @@ namespace Expandicon
                         else
                             feedback = "Console error: command expects a valid variable alias";
                     }
+                    else if (command.getParameterType() == ParameterType.GAMEOBJECT)
+                    {
+                        //make sure the next parameter is a registered variable
+                        if (parameters.Count > 0 && gameObjectAliasList.Contains(parameters[0]))
+                        {
+                            string alias = parameters[0];
+                            parameters.RemoveAt(0);
+                            GameObject gameObject = aliasToGameObjectMap[alias];
+                            if (gameObject != null)
+                                feedback = commandName + ": " + command.runCommand(gameObject, parameters.ToArray());
+                            else
+                                feedback = "Console error: given GameObject has been destroyed!";
+                        }
+                        else
+                            feedback = "Console error: command expects a valid variable alias";
+                    }
                     else
                         feedback = commandName + ": " + command.runCommand(parameters.ToArray());
 
@@ -242,6 +268,8 @@ namespace Expandicon
 
                         if (paramType == ParameterType.VARIABLE)
                             closestPossibleAlias = getClosestVariableAlias(tokens[1]);
+                        else if (paramType == ParameterType.GAMEOBJECT)
+                            closestPossibleAlias = getClosestGameObjectAlias(tokens[1]);
 
                         //check if it is found
                         if (closestPossibleAlias != tokens[1])
